@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 const Instagram = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
 );
@@ -15,25 +14,26 @@ const Logo = () => (
     <div className="relative flex items-center justify-center w-7 h-7 rounded-full border-2 border-foreground/60 group-hover:border-foreground transition-colors">
       <div className="w-3 h-3 rounded-full border border-foreground/60" />
     </div>
-    <span className="font-bold text-lg text-white">Fluxyn</span>
+    <span className="font-bold text-lg text-foreground">Fluxyn</span>
   </div>
 );
 
 export function Navbar() {
   return (
     <nav className="fixed top-0 z-50 w-full px-8 md:px-28 py-4 bg-transparent flex items-center justify-between">
-      <Link to="/">
-        <Logo />
-      </Link>
-
-      <div className="hidden md:flex items-center gap-6 text-muted-foreground text-sm font-medium">
-        <a href="#" className="hover:text-foreground transition-colors">Home</a>
-        <span className="opacity-40">•</span>
-        <a href="#" className="hover:text-foreground transition-colors">How It Works</a>
-        <span className="opacity-40">•</span>
-        <a href="#" className="hover:text-foreground transition-colors">Philosophy</a>
-        <span className="opacity-40">•</span>
-        <a href="#" className="hover:text-foreground transition-colors">Use Cases</a>
+      <div className="flex items-center gap-12">
+        <Link to="/">
+          <Logo />
+        </Link>
+        <div className="hidden md:flex items-center gap-6 text-muted-foreground text-sm font-medium">
+          <a href="#" className="hover:text-foreground transition-colors">Home</a>
+          <span className="opacity-40">•</span>
+          <a href="#" className="hover:text-foreground transition-colors">How It Works</a>
+          <span className="opacity-40">•</span>
+          <a href="#" className="hover:text-foreground transition-colors">Philosophy</a>
+          <span className="opacity-40">•</span>
+          <a href="#" className="hover:text-foreground transition-colors">Use Cases</a>
+        </div>
       </div>
 
       <div className="flex items-center gap-3">
