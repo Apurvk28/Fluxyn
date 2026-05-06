@@ -16,13 +16,7 @@ import { VideoBackground } from "../components/VideoBackground";
 
 const USER_NAME = "Apurv";
 
-const MOCK_PROJECTS = [
-  { id: 1, name: "Portfolio Website", date: "2 days ago" },
-  { id: 2, name: "E-commerce Store", date: "1 week ago" },
-  { id: 3, name: "SaaS Dashboard", date: "2 weeks ago" },
-  { id: 4, name: "Blog Platform", date: "1 month ago" },
-  { id: 5, name: "Landing Page - Startup", date: "1 month ago" },
-];
+const MOCK_PROJECTS: any[] = [];
 
 const TEMPLATES = [
   { label: "Portfolio", emoji: "🎨" },
@@ -112,8 +106,8 @@ export function Dashboard() {
       <div className="relative min-h-screen flex flex-col overflow-hidden">
         {/* Video Background */}
         <VideoBackground
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4"
-          className="absolute inset-0 w-full h-full z-0 opacity-40"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_045634_e1c98c76-1265-4f5c-882a-4276f2080894.mp4"
+          className="absolute inset-0 w-full h-full z-0"
           overlayOpacity={0}
         />
 
@@ -122,7 +116,7 @@ export function Dashboard() {
           className="absolute inset-0 z-[1]"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139,92,246,0.2) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 60%, rgba(236,72,153,0.1) 0%, transparent 50%), #0d0d0f",
+              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139,92,246,0.2) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 60%, rgba(236,72,153,0.1) 0%, transparent 50%)",
             mixBlendMode: "overlay"
           }}
         />
@@ -207,7 +201,7 @@ export function Dashboard() {
               <button
                 key={t.label}
                 onClick={() => setPrompt(`Build a ${t.label} website`)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/[0.08] text-zinc-400 text-xs hover:text-white hover:bg-white/10 hover:border-white/15 transition-all"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-white text-sm font-medium hover:bg-white/30 hover:border-white/30 transition-all shadow-lg"
               >
                 <span>{t.emoji}</span>
                 <span>{t.label}</span>
@@ -330,58 +324,7 @@ export function Dashboard() {
           )}
         </AnimatePresence>
 
-        {/* Projects section — shown only when no preview is active */}
-        {!generatedCode && !loading && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-            className="relative z-10 mx-6 mb-8"
-          >
-            <div className="bg-[#111113]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-5">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex gap-1">
-                  <button className="px-4 py-1.5 rounded-full text-sm bg-white/10 text-white font-medium">
-                    My projects
-                  </button>
-                  <button className="px-4 py-1.5 rounded-full text-sm text-zinc-500 hover:text-white hover:bg-white/5 transition-colors">
-                    Templates
-                  </button>
-                </div>
-                <button className="text-xs text-zinc-500 hover:text-white transition-colors">
-                  Browse all →
-                </button>
-              </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-                {MOCK_PROJECTS.map((project, i) => (
-                  <motion.div
-                    key={project.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.35 + i * 0.05 }}
-                    className="group rounded-xl bg-white/[0.03] border border-white/5 p-3 hover:bg-white/[0.08] hover:border-white/10 transition-all cursor-pointer"
-                  >
-                    <div
-                      className="w-full aspect-video rounded-lg mb-3 flex items-center justify-center"
-                      style={{
-                        background: `hsl(${(i * 60 + 240) % 360}, 50%, 20%)`,
-                      }}
-                    >
-                      <span className="text-2xl opacity-60">🌐</span>
-                    </div>
-                    <p className="text-xs text-white font-medium truncate group-hover:text-violet-300 transition-colors">
-                      {project.name}
-                    </p>
-                    <p className="text-[10px] text-zinc-600 mt-0.5">
-                      {project.date}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
       </div>
     </DashboardLayout>
   );
