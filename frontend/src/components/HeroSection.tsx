@@ -11,7 +11,7 @@ export function HeroSection() {
   const handleGetStarted = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue) return;
-    navigate("/new-page");
+    navigate("/login");
   };
 
   return (

@@ -91,8 +91,8 @@ export function Sidebar({ projects = [] }: SidebarProps) {
             {navItem(
               <Home className="w-4 h-4" />,
               "Home",
-              () => navigate("/new-page"),
-              location.pathname === "/new-page"
+              () => navigate("/dashboard"),
+              location.pathname === "/dashboard"
             )}
 
             {/* Search toggle */}

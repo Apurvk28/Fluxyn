@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0?dev",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?dev",
+        "react-dom": "https://esm.sh/react-dom@18.2.0?dev",
+        "framer-motion": "https://esm.sh/framer-motion@11.1.7?dev",
+        "lucide-react": "https://esm.sh/lucide-react@0.370.0?dev"
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>body { margin: 0; background: #09090b; color: white; font-family: system-ui, sans-serif; }</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" data-type="module">
+    import React from 'react';
+    import { motion } from 'framer-motion';
+    import { ArrowRight } from 'lucide-react';
+
+    function App() {
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="h-screen flex justify-center items-center"
+        >
+          <h1 className="text-5xl font-semibold tracking-tight text-white text-center">
+            Hello World <ArrowRight />
+          </h1>
+        </motion.div>
+      );
+    }
+    
+    import { createRoot as __createRoot } from 'react-dom/client';
+    const __root = __createRoot(document.getElementById('root'));
+    if (typeof App !== 'undefined') {
+      __root.render(React.createElement(App));
+    } else {
+      document.getElementById('root').innerHTML = '<div style="color:red;padding:20px;">Error: App component not found in generated code.</div>';
+    }
+  </script>
+</body>
+</html>

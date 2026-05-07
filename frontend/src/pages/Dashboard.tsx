@@ -14,8 +14,6 @@ import { DashboardLayout } from "../components/dashboard/DashboardLayout";
 import { generateWebsite } from "../services/api";
 import { VideoBackground } from "../components/VideoBackground";
 
-const USER_NAME = "Apurv";
-
 const MOCK_PROJECTS: any[] = [];
 
 const TEMPLATES = [
@@ -35,8 +33,21 @@ export function Dashboard() {
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
   const [error, setError] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem("fluxyn_user");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setUserName(user.name);
+      } catch (e) {}
+    } else {
+      window.location.href = "/login";
+    }
+  }, []);
 
   // Auto-grow textarea
   useEffect(() => {
@@ -57,17 +68,32 @@ export function Dashboard() {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Preview</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0?dev",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?dev",
+        "react-dom": "https://esm.sh/react-dom@18.2.0?dev",
+        "framer-motion": "https://esm.sh/framer-motion@11.1.7?dev",
+        "lucide-react": "https://esm.sh/lucide-react@0.370.0?dev"
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>body { margin: 0; background: #09090b; color: white; font-family: system-ui, sans-serif; }</style>
 </head>
 <body>
   <div id="root"></div>
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="text/babel" data-presets="react">
+  <script type="text/babel" data-type="module" data-presets="react">
     ${generatedCode}
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(React.createElement(App));
+    
+    import { createRoot as __createRoot } from 'react-dom/client';
+    const __root = __createRoot(document.getElementById('root'));
+    if (typeof App !== 'undefined') {
+      __root.render(React.createElement(App));
+    } else {
+      document.getElementById('root').innerHTML = '<div style="color:red;padding:20px;">Error: App component not found in generated code.</div>';
+    }
   </script>
 </body>
 </html>`;
@@ -132,7 +158,7 @@ export function Dashboard() {
           >
             Ready to build,{" "}
             <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
-              {USER_NAME}?
+              {userName ? userName.split(" ")[0] : "there"}?
             </span>
           </motion.h1>
 
