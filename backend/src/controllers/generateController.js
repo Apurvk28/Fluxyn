@@ -28,8 +28,8 @@ async function generate(req, res) {
   } catch (err) {
     console.error('[generate] Error:', err.message);
 
-    if (err.message.includes('GEMINI_API_KEY')) {
-      return res.status(500).json({ error: 'AI service not configured. Please set GEMINI_API_KEY.' });
+    if (err.message.includes('GROQ_API_KEY')) {
+      return res.status(500).json({ error: 'AI service not configured. Please set GROQ_API_KEY.' });
     }
 
     return res.status(500).json({ error: 'Failed to generate website. Please try again.' });

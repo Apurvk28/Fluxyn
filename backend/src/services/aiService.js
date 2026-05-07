@@ -1,4 +1,4 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const Groq = require('groq-sdk');
 
 const SYSTEM_PROMPT = `You are Fluxyn — an advanced AI-powered website builder.
 
@@ -118,16 +118,16 @@ The last line must export the default component.
 USER REQUEST:
 {{USER_INPUT}}`;
 
-let genAI = null;
+let groqClient = null;
 
 function getClient() {
-  if (!process.env.GEMINI_API_KEY) {
-    throw new Error('GEMINI_API_KEY is not set in environment variables');
+  if (!process.env.GROQ_API_KEY) {
+    throw new Error('GROQ_API_KEY is not set in environment variables');
   }
-  if (!genAI) {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  if (!groqClient) {
+    groqClient = new Groq({ apiKey: process.env.GROQ_API_KEY });
   }
-  return genAI;
+  return groqClient;
 }
 
 /**
@@ -137,20 +137,21 @@ function getClient() {
  */
 async function generateWebsite(userPrompt) {
   const client = getClient();
-  const model = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
   const fullPrompt = SYSTEM_PROMPT.replace('{{USER_INPUT}}', userPrompt);
 
-  const result = await model.generateContent({
-    contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 8192,
-    },
+  const chatCompletion = await client.chat.completions.create({
+    messages: [
+      {
+        role: "user",
+        content: fullPrompt,
+      }
+    ],
+    model: "llama-3.3-70b-versatile",
+    temperature: 0.7,
+    max_tokens: 8000,
   });
 
-  const response = result.response;
-  let code = response.text();
+  let code = chatCompletion.choices[0]?.message?.content || "";
 
   // Strip any accidental markdown fences the model may have added
   code = code.replace(/^```[a-z]*\n?/gm, '').replace(/^```$/gm, '').trim();
