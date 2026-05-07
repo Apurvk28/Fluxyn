@@ -4,41 +4,89 @@ Fluxyn is a high-performance, cinematic AI website builder designed to transform
 
 ## 🚀 Features
 
-- **AI-Driven Generation**: Powered by Google Gemini 2.0 Flash to synthesize full-stack frontend code from simple prompts.
+- **AI-Driven Generation**: Powered by Groq API for ultra-fast generation of full-stack frontend code from simple prompts.
 - **Cinematic UI**: Full-page video backgrounds, scroll-driven word reveals, and liquid-glass components.
 - **Monochrome Design System**: A clean, professional dark-mode aesthetic using HSL-based design tokens.
-- **Project Dashboard**: A dedicated workspace to manage generations and explore templates.
+- **Project Dashboard & Authentication**: Secure user login, dedicated workspace to manage generations, and template exploration.
 - **Real-time Preview**: Integrated iframe-based preview for instant visualization of AI-generated websites.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    Client[Client Browser]
+    
+    subgraph Frontend [Frontend: React + Vite]
+        UI[UI Components]
+        Auth_UI[Auth Pages]
+        Dashboard_UI[Dashboard]
+        API_Service[Axios API Service]
+        
+        UI --> API_Service
+        Auth_UI --> API_Service
+        Dashboard_UI --> API_Service
+    end
+    
+    subgraph Backend [Backend: Node.js + Express]
+        Router[Express Router]
+        Auth_Controller[Auth Controller]
+        Gen_Controller[Generation Controller]
+        AI_Service[AI Service Groq SDK]
+        
+        Router --> Auth_Controller
+        Router --> Gen_Controller
+        Gen_Controller --> AI_Service
+    end
+    
+    subgraph Database [Database: MongoDB]
+        Users_DB[(Users Collection)]
+        Sites_DB[(Sites/Generations Collection)]
+    end
+    
+    subgraph External [External APIs]
+        Groq_API[Groq API LLM]
+    end
+    
+    Client -->|HTTPS| Frontend
+    API_Service -->|REST API| Router
+    Auth_Controller --> Database
+    Gen_Controller --> Database
+    AI_Service -->|HTTPS| Groq_API
+```
 
 ---
 
 ## 📂 Project Structure
 
-The project is split into a **Client-Server** architecture:
-
-### 🖥️ Backend (Node.js/Express)
 ```text
-backend/
-├── src/
-│   ├── controllers/   # Logic for AI generation
-│   ├── routes/        # API endpoint definitions
-│   └── index.js       # Entry point & Server config
-├── .env               # Environment variables (API keys)
-└── package.json       # Backend dependencies
-```
-
-### 🎨 Frontend (React/Vite/TS)
-```text
-frontend/
-├── src/
-│   ├── components/    # Reusable UI sections & Dashboard components
-│   ├── pages/         # Main application routes (Landing, Build, Resources)
-│   ├── services/      # Axios API integration
-│   ├── lib/           # Animation helpers and styling utilities
-│   ├── App.tsx        # Routing logic
-│   └── index.css      # Global styles & Liquid Glass implementation
-├── public/            # Static assets & cinematic videos
-└── package.json       # Frontend dependencies
+Fluxyn/
+├── backend/
+│   ├── src/
+│   │   ├── config/        # Database and environment configurations
+│   │   ├── controllers/   # Logic for Auth and AI generation
+│   │   ├── middleware/    # Express middlewares
+│   │   ├── models/        # Mongoose database models
+│   │   ├── routes/        # API endpoint definitions (e.g., auth, generation)
+│   │   ├── services/      # AI services (Groq API integrations)
+│   │   └── index.js       # Entry point & Server config
+│   ├── .env.example       # Example environment variables
+│   └── package.json       # Backend dependencies (Express, Mongoose, Groq SDK)
+├── frontend/
+│   ├── public/            # Static assets & cinematic videos
+│   ├── src/
+│   │   ├── assets/        # Additional frontend assets
+│   │   ├── components/    # Reusable UI components & Dashboard segments
+│   │   ├── hooks/         # Custom React hooks
+│   │   ├── lib/           # Animation helpers and styling utilities
+│   │   ├── pages/         # Main application routes (Landing, Auth, Dashboard)
+│   │   ├── services/      # Axios API integration for backend endpoints
+│   │   ├── App.tsx        # Routing logic and core layout
+│   │   └── index.css      # Global styles & Liquid Glass implementation
+│   ├── vite.config.ts     # Vite configuration
+│   └── package.json       # Frontend dependencies (React, Tailwind, Framer Motion)
+└── README.md              # Project documentation
 ```
 
 ---
@@ -62,15 +110,17 @@ cd Fluxyn
    ```bash
    npm install
    ```
-3. Create a `.env` file in the `backend/` root and add your Gemini API Key:
+3. Create a `.env` file in the `backend/` root and add your Groq API Key and MongoDB URI:
    ```env
    PORT=8000
-   GEMINI_API_KEY=your_gemini_api_key_here
+   GROQ_API_KEY=your_groq_api_key_here
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret_here
    ```
-   *Get your key at: [Google AI Studio](https://aistudio.google.com/app/apikey)*
+   *Get your API key at: [Groq Console](https://console.groq.com/keys)*
 4. Start the server:
    ```bash
-   node src/index.js
+   npm run dev
    ```
    The backend will run on `http://localhost:8000`.
 
@@ -94,8 +144,9 @@ cd Fluxyn
 ## 🧬 Technology Stack
 
 - **Frontend**: React 19, Vite, TypeScript, Tailwind CSS, Framer Motion, Lucide React.
-- **Backend**: Node.js, Express, Axios.
-- **AI**: Google Generative AI (Gemini 2.0 Flash).
+- **Backend**: Node.js, Express, Axios, JWT Authentication.
+- **Database**: MongoDB & Mongoose.
+- **AI**: Groq SDK for hyper-fast inference.
 - **Styling**: Vanilla CSS (Liquid Glass), Tailwind Utilities.
 
 ---
